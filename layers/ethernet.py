@@ -61,8 +61,8 @@ class Ethernet():
 	def __init__(self):
 		self.src_mac = ''
 		self.dst_mac = ''
-		#self.type = 0x0800
-		self.type = 0x9000
+		self.type = 0x0800 # ip V4  testing sin capa superior
+		#self.type = 0x9000
 		self.data = ''
 
 	def create(self):
