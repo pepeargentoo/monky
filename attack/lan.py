@@ -3,7 +3,6 @@ from general.general import General
 from layers.arp import ARPRequest,ARPRepley
 from time import sleep
 from socket import AF_PACKET,SOCK_RAW,socket
-from numba import jit
 
 """
 Arp Spoofing
@@ -15,7 +14,6 @@ ARP Spoofing
 Ataques que emplean ARP Spoofing.
 """
 class Lan():
-	@jit
 	def MacOverflow(self,iface,numero=-1,time=0):
 		getvalores = General()
 		s = socket(AF_PACKET,SOCK_RAW)
@@ -40,7 +38,7 @@ class Lan():
 				s.send(ethernet_send)
 				print('src_mac:'+ethernet.src_mac+' dst_mac:'+ethernet.dst_mac )
 		
-	def 
+	
 
 	def ARPSpoofing(self,iface,host1,host2):
 	
